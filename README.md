@@ -6,7 +6,8 @@ Prerequisites: you must have docker installed on your system.
 
 ## Compiling the example for linux
 
-To build this example for linux, use:
+To build the linux version of this example, use the command below.
+Note that the OS of your host machine doesn't matter - if you have docker working, then this should work on Linux, Mac and Windows hosts. 
 
 ```
 docker run \
@@ -16,7 +17,7 @@ docker run \
 ```
 
 This command will:
-* Download the latest docker image containing pre-built allegro and its dependencies from docker hub.
+* Download the latest docker image `amarillion/alleg5-buildenv:latest` containing pre-built allegro and its dependencies from docker hub.
 * Map the current directory (`pwd`) to `/data` inside the container. That way your project files
 are available inside the container. Any files created in this direcory will be availble from the host as well.
 * Invoke `make BUILD=RELEASE` inside this container
@@ -24,7 +25,9 @@ are available inside the container. Any files created in this direcory will be a
 
 ## Compiling the example for windows
 
-To build this example for windows, use:
+To build this example for windows, use the command below.
+Again, this should work regardless of the OS of your host machine.
+
 ```
 docker run \
 	-v $(pwd):/data \
@@ -32,8 +35,7 @@ docker run \
 	make BUILD=RELEASE TOOLCHAIN=i686-w64-mingw32- WINDOWS=1
 ```
 
-This time, we use a different docker image, one that contains a mingw-w64 cross-compilation toolchain. 
-We again invoke make, but supply a few different flags to our makefile. The resulting binary will be created in build/release_win/example.exe
+This time, we use a different docker image: `amarillion/alleg5-buildenv:latest-mingw-w64-i686`. This one that contains a mingw-w64 cross-compilation toolchain. We again invoke make, but supply a few different flags to our makefile. The flag `WINDOWS=1` will do extra windows-specific things like adding the icon to our .exe. The flag `TOOLCHAIN=i686-w64-mingw32-` tells the makefile which prefix to use for commands like `gcc` and `windres`. The resulting binary will be created in build/release_win/example.exe
 
 This .exe won't run without a few dlls. These DLLs are present inside the docker image, to get them out we can run the collect-dlls.sh script.
 
