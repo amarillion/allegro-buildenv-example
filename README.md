@@ -4,6 +4,14 @@ Very simple example to demonstrate how to build an allegro game using docker.
 
 Prerequisites: you must have docker installed on your system.
 
+Then, check-out a working copy of this git repository on your PC. 
+
+```
+git clone https://github.com/amarillion/allegro-buildenv-example.git
+```
+
+Change your current directory to this working copy before you run the commands below.
+
 ## Compiling the example for linux
 
 To build the linux version of this example, use the command below.
