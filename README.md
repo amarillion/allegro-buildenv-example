@@ -12,14 +12,15 @@ git clone https://github.com/amarillion/allegro-buildenv-example.git
 
 Change your current directory to this working copy before you run the commands below.
 
-## Compiling the example for linux
+## Compiling the example for linux from linux hosts.
 
 To build the linux version of this example, use the command below.
-Note that the OS of your host machine doesn't matter - if you have docker working, then this should work on Linux, Mac and Windows hosts. 
+Note that the process will be very similar for Windows or Mac - if you have docker working. The way you invoke docker may be slightly different but the make command should work the same and produce the same results.
 
 ```
 docker run \
 	-v $(pwd):/data \
+	-u $(id -u):$(id -g) \
 	amarillion/alleg5-buildenv:latest \
 	make BUILD=RELEASE
 ```
@@ -28,6 +29,7 @@ This command will:
 * Download the latest docker image `amarillion/alleg5-buildenv:latest` containing pre-built allegro and its dependencies from docker hub.
 * Map the current directory (`pwd`) to `/data` inside the container. That way your project files
 are available inside the container. Any files created in this direcory will be availble from the host as well.
+* The line `-u $(id -u):$(id -g)` will make docker assume your current user/group, so that files written to the current directory have the right permissions.
 * Invoke `make BUILD=RELEASE` inside this container
 * The resulting binary will be `build/release/example`
 
@@ -39,6 +41,7 @@ Again, this should work regardless of the OS of your host machine.
 ```
 docker run \
 	-v $(pwd):/data \
+	-u $(id -u):$(id -g) \
 	amarillion/alleg5-buildenv:latest-mingw-w64-i686 \
 	make BUILD=RELEASE TOOLCHAIN=i686-w64-mingw32- WINDOWS=1
 ```
@@ -50,6 +53,7 @@ This .exe won't run without a few dlls. These DLLs are present inside the docker
 ```
 docker run \
 	-v $(pwd):/data \
+	-u $(id -u):$(id -g) \
 	amarillion/alleg5-buildenv:latest-mingw-w64-i686 \
 	./collect-dlls.sh build/release_win/example.exe
 ```
@@ -64,6 +68,7 @@ If you ever need to inspect a docker image, for example to troubleshoot a makefi
 ```
 docker run \
  	-ti \
+	-u $(id -u):$(id -g) \
  	-v $(pwd):/data \
  	amarillion/alleg5-buildenv:latest-mingw-w64-i686
 ```
